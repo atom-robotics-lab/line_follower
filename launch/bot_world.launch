@@ -1,0 +1,29 @@
+<launch>
+  <arg name="x_pos" default="0.0" />
+	<arg name="y_pos" default="0.0" />
+	<arg name="z_pos" default="1.5" />
+	<arg name="yaw" default="2.45" />
+
+  <!--This sets robot_description param, launches rviz, 
+  robot_state_publisher and joint_state_publisher-->
+  <include file="$(find mr_robot_description)/launch/display.launch"> 
+		<arg name="rvizconfig" value="$(find bot_slm)/rviz/line_follower.rviz" />
+	</include>
+
+	<node args="-param robot_description -urdf -model mr_robot -x $(arg x_pos) -y $(arg y_pos) -z $(arg z_pos) -Y $(arg yaw)" name="spawn_urdf" pkg="gazebo_ros" type="spawn_model"/>
+
+  
+
+
+  <include file="$(find gazebo_ros)/launch/empty_world.launch">
+    <arg name="world_name" value="$(find bot_slm)/worlds/bot_world.world"/>
+    
+    <arg name="paused" value="false"/>
+    <arg name="use_sim_time" value="true"/>
+    <arg name="gui" value="true"/>
+    <arg name="headless" value="false"/>
+    <arg name="debug" value="false"/>
+  </include>
+
+  <!-- <node name="spawn_urdf" pkg="gazebo_ros" type="spawn_model" args="-urdf -model mr_robot -x $(arg x_pos) -y $(arg y_pos) -z $(arg z_pos) -param robot_description" /> -->
+</launch>
