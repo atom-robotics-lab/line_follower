@@ -21,7 +21,7 @@ class Line_detection():
         # capture videoz
         while True:
             ret, frame1 = v.read()
-            frame=frame1[180:400, 120:520]
+            frame=frame1[250:600, ::]
             # color space change
             hsv = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
             lower_black = np.array([0, 0, 0])
@@ -51,6 +51,7 @@ class Line_detection():
                 break
             bridge = cv_bridge.CvBridge()
             image_message = bridge.cv2_to_imgmsg(result, encoding="passthrough")
+            
         v.release()
         cv2.destroyAllWindows()
 
