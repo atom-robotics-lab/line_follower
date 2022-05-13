@@ -1,5 +1,4 @@
 #! /usr/bin/env python3
-from re import L
 import sys
 import cv2
 import numpy as np
@@ -7,6 +6,7 @@ import cv_bridge
 from sensor_msgs.msg import Image, CameraInfo
 from geometry_msgs.msg import Twist
 import rospy
+import math
 
 
 class Line_detection():
@@ -20,6 +20,8 @@ class Line_detection():
         v = cv2.VideoCapture(0)
         # capture videoz
         while True:
+            cx=400
+            cy=425
             ret, frame1 = v.read()
             frame=frame1[250:600, ::]
             # color space change
@@ -40,6 +42,20 @@ class Line_detection():
                 if M["m00"] != 0:
                     cX = int(M["m10"] / M["m00"])
                     cY = int(M["m01"] / M["m00"])
+                    if cX<cx:
+                        d = math.sqrt(( cy-cY)**2 + ( cx-cX)**2)
+                        print("turn left")
+                        print(d)
+                    if cX>cx:
+                        d = -(math.sqrt(( cy-cY)**2 + ( cx-cX)**2))
+                        print("turn right")
+                        print(d)
+                    if cX==cx:
+                        print(d)
+                        print("you r on right path")
+                    if d==0:
+                        print(d)
+                        print("you r right")
                 else:
                     cX, cY = 0, 0
                 cv2.circle(result, (cX, cY), 5, (255, 255, 255), -1)
@@ -47,7 +63,7 @@ class Line_detection():
             cv2.imshow('Cropped', frame)
             cv2.imshow('Orignal',frame1)
             cv2.imshow('result', result)
-            if cv2.waitKey(1) and 0xFF == ord('Q'):
+            if cv2.waitKey(1) & 0xff == ord('q'):
                 break
             bridge = cv_bridge.CvBridge()
             image_message = bridge.cv2_to_imgmsg(result, encoding="passthrough")
