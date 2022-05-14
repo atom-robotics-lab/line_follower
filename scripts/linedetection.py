@@ -4,18 +4,19 @@ import cv2
 import numpy as np
 import cv_bridge
 from sensor_msgs.msg import Image, CameraInfo
-from geometry_msgs.msg import Twist
+from std_msgs.msg import Float32
 import rospy
 import math
 
 
+
 class Line_detection():
     def __init__(self):
+        rospy.init_node('ERROR', anonymous=False) #initialize user default node and annoymous help in maintaining uniquness of node
         self.bridge = cv_bridge.CvBridge()
-        self.image_sub = rospy.Subscriber('LineFollower/Video',Image, self.image_callback)
-        self.cmd_vel_pub = rospy.Publisher('/cmd_vel',Twist, queue_size=1)
-        self.twist = Twist()
-
+        self.pub = rospy.Publisher('geometry_msgs',Float32, queue_size=10) 
+        self.sub = rospy.Subscriber('geometry_msgs',Float32, queue_size=10) 
+        rate = rospy.Rate(10)
     def draw_grid(img, grid_shape, color=(0, 255, 0), thickness=1):
         h, w, _ = img.shape
         rows, cols = grid_shape
@@ -81,14 +82,12 @@ class Line_detection():
                 
                 cv2.circle(frame, (cX, cY), 5, (255, 255, 255), -1)
                 cv2.putText(frame, "centroid", (cX - 25, cY - 25), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255, 255, 255), 2)
+            self.pub.publish(d)
             cv2.imshow('Cropped', frame)
             #cv2.imshow('Orignal',frame1)
             cv2.imshow('result', result)
             if cv2.waitKey(1) & 0xff == ord('q'):
                 break
-            bridge = cv_bridge.CvBridge()
-            image_message = bridge.cv2_to_imgmsg(result, encoding="passthrough")
-            
         v.release()
         cv2.destroyAllWindows()
 
