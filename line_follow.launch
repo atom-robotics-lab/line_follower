@@ -1,0 +1,4 @@
+<launch>
+    <rosparam file="$(find robot_controller)/config/line_follow.yaml" command="load" />
+    <!--<node>-->
+</launch>
