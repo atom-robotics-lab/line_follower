@@ -14,8 +14,8 @@ class Line_Follower():
         rospy.init_node('ERROR', anonymous=False) #initialize user default node and annoymous help in maintaining uniquness of node
         self.bridge = cv_bridge.CvBridge()
         
-        self.pub = rospy.Publisher('geometry_msgs',Float32, queue_size=10) 
-        self.sub = rospy.Subscriber('geometry_msgs',Float32, queue_size=10) 
+        self.pub = rospy.Publisher('std_msgs',Float32, queue_size=10) 
+        self.sub = rospy.Subscriber('std_msgs',Float32, queue_size=10) 
 
         rate = rospy.Rate(10)
         
@@ -27,7 +27,7 @@ class Line_Follower():
         # capture videoz
         while True:
             cX=88
-            cY=72
+            cY=22
 
             ret, frame = cap.read()
             hsv=cv2.cvtColor(frame,cv2.COLOR_BGR2HSV)
@@ -38,7 +38,7 @@ class Line_Follower():
 
  
             lower_brg=np.array([0,0,0])
-            upper_brg=np.array([180, 255, 65])
+            upper_brg=np.array([180, 255, 70])
             mask = cv2.inRange(dst,lower_brg, upper_brg)
             cropped_image1 = frame[100::, 0::]
             #cropped_image3 = inverted_image[100::, 0::]
@@ -47,13 +47,7 @@ class Line_Follower():
             cv2.line(cropped_image1, (88, 0), (88, 144), color=(0, 255, 0), thickness=1)
             #vertical
             cv2.line(cropped_image1, (0, 22), (176, 22), color=(0, 255, 0), thickness=1)
-            '''
-            N = cv2.moments(brg)
-            if N["m00"] != 0:
-                cX = int(N["m10"] / N["m00"])
-                cY = int(N["m01"] / N["m00"])
-                print("cX : "+str(cX)+"  cY : "+str(cY))
-                '''
+            
             #Contours
             contours, hierarchy = cv2.findContours(cropped_image3 , 1, cv2.CHAIN_APPROX_NONE)
             if len(contours) >0:
@@ -68,43 +62,44 @@ class Line_Follower():
                     print("CX : "+str(cx)+"  CY : "+str(cy))
                     if cx<(cX-5):
                         d = math.sqrt(( cy-cY)**2 + ( cx-cX)**2)
-                        print("turn right")
-                        print(d)
-                    if cx>(cX+5):
-                        d = -(math.sqrt(( cy-cY)**2 + ( cx-cX)**2))
                         print(d)
                         print("turn left")
-                    if cx in range (cX-5,cX+6):
-                        print(0)
-                        print("you r on right path")
-                    if d==0:
+                    if cx>(cX+5):
+                        d = math.sqrt(( cy-cY)**2 + ( cx-cX)**2)
                         print(d)
-                        print("you r right")
+                        print("turn right")
+                    if cx in range (cX-5,cX+6):
+                        d=math.sqrt(( cy-cY)**2 + ( cx-cX)**2)
+                        print(d)
+                        print("you r on right path")
 
 
                 else:
                     cx, cy = 0, 0
-                
+            
+
                 
                 cv2.circle(cropped_image3, (cx, cy), 2, (255, 255, 255), -2)
                 cv2.circle(cropped_image1, (cx, cy), 2, (255, 255, 255), -2)
                 #cv2.circle(cropped_image2, (cX, cY), 5, (255, 255, 255), -2)
-                
-            cv2.drawContours(cropped_image1, c, -1, (0,255,0), 1)
-            
-            self.pub.publish(d)
-            cv2.imshow("Mask",cropped_image3)
-            cv2.imshow("Frame",cropped_image1)
-            cv2.imshow("Frame1",frame)
+
+                cv2.drawContours(cropped_image1, c, -1, (0,255,0), 1)
+                self.pub.publish(d)
+                cv2.imshow("Mask",cropped_image3)
+                cv2.imshow("Frame",cropped_image1)
+                cv2.imshow("Frame1",frame)
 
             #cv2.imshow("Gray",cropped_image2)   
-            
+            else:
+                print("no path")
+                cap.release()
+                cv2.destroyAllWindows()
+                break
 
         
             if cv2.waitKey(10) & 0xff == ord('q'):
                 break
         cap.release()
-
         cv2.destroyAllWindows()
 
 
