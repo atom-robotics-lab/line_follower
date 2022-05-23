@@ -33,11 +33,11 @@ class bot_cotrol:
         if linear_error != 0:
             
             # moving in straight line
-            self.move(self.P*linear_error, 2)
+            self.move(self.P*linear_error, 0)
             
         if orien_error != 0:           
             # fixing the yaw     
-             self.move(0,self.P*-1*orien_error)
+             self.move(2,self.P*-1*orien_error)
 
 
   
