@@ -88,7 +88,7 @@
       <heading_deg>0</heading_deg>
     </spherical_coordinates>
     <model name='black_line'>
-      <pose>3.86476 -2.04215 0 1.5708 -0 0</pose>
+      <pose>-0.395624 3.88261 0 1.5708 -0 0</pose>
       <static>1</static>
       <link name='link'>
         <collision name='colision1'>
@@ -125,25 +125,25 @@
       </link>
     </model>
     <state world_name='default'>
-      <sim_time>1644 100000000</sim_time>
-      <real_time>1838 718821257</real_time>
-      <wall_time>1650643472 169575115</wall_time>
-      <iterations>1644100</iterations>
-      <model name='ground_plane'>
-        <pose>0 0 0 0 -0 0</pose>
+      <sim_time>134 810000000</sim_time>
+      <real_time>138 377243666</real_time>
+      <wall_time>1653333794 232469761</wall_time>
+      <iterations>134810</iterations>
+      <model name='black_line'>
+        <pose>-0.808483 0.871926 0.065151 0 -0 0</pose>
         <scale>1 1 1</scale>
         <link name='link'>
-          <pose>0 0 0 0 -0 0</pose>
+          <pose>-0.808483 0.871926 0.065151 0 -0 0</pose>
           <velocity>0 0 0 0 -0 0</velocity>
           <acceleration>0 0 0 0 -0 0</acceleration>
           <wrench>0 0 0 0 -0 0</wrench>
         </link>
       </model>
-      <model name='black_line'>
-        <pose>0.025515 -0.008732 0.389369 0.003469 -0 0</pose>
+      <model name='ground_plane'>
+        <pose>0 0 0 0 -0 0</pose>
         <scale>1 1 1</scale>
         <link name='link'>
-          <pose>0.025515 -0.008732 0.389369 0.003469 -0 0</pose>
+          <pose>0 0 0 0 -0 0</pose>
           <velocity>0 0 0 0 -0 0</velocity>
           <acceleration>0 0 0 0 -0 0</acceleration>
           <wrench>0 0 0 0 -0 0</wrench>
@@ -155,7 +155,7 @@
     </state>
     <gui fullscreen='0'>
       <camera name='user_camera'>
-        <pose>2.02134 97.4406 31.3649 0 0.467643 -1.971</pose>
+        <pose>9.04798 5.03924 8.34787 0 0.771643 -2.80699</pose>
         <view_controller>orbit</view_controller>
         <projection_type>perspective</projection_type>
       </camera>
