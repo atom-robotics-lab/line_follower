@@ -18,7 +18,7 @@
         <falloff>0</falloff>
       </spot>
     </light>
-    <!-- <model name='ground_plane'>
+    <model name='ground_plane'>
       <static>1</static>
       <link name='link'>
         <collision name='collision'>
@@ -57,7 +57,7 @@
           <material>
             <script>
               <uri>file://media/materials/scripts/gazebo.material</uri>
-              <name>Gazebo/Grey</name>
+              <name>Gazebo/White</name>
             </script>
           </material>
         </visual>
@@ -65,7 +65,7 @@
         <enable_wind>0</enable_wind>
         <kinematic>0</kinematic>
       </link>
-    </model> -->
+    </model>
     <gravity>0 0 -9.8</gravity>
     <magnetic_field>6e-06 2.3e-05 -4.2e-05</magnetic_field>
     <atmosphere type='adiabatic'/>
@@ -125,10 +125,10 @@
       </link>
     </model>
     <state world_name='default'>
-      <sim_time>134 810000000</sim_time>
-      <real_time>138 377243666</real_time>
-      <wall_time>1653333794 232469761</wall_time>
-      <iterations>134810</iterations>
+      <sim_time>230 400000000</sim_time>
+      <real_time>96 709666592</real_time>
+      <wall_time>1653472695 704861001</wall_time>
+      <iterations>95590</iterations>
       <model name='black_line'>
         <pose>-0.808483 0.871926 0.065151 0 -0 0</pose>
         <scale>1 1 1</scale>
@@ -155,7 +155,7 @@
     </state>
     <gui fullscreen='0'>
       <camera name='user_camera'>
-        <pose>9.04798 5.03924 8.34787 0 0.771643 -2.80699</pose>
+        <pose>5.08628 9.44105 7.82887 0 0.779642 -2.15899</pose>
         <view_controller>orbit</view_controller>
         <projection_type>perspective</projection_type>
       </camera>
