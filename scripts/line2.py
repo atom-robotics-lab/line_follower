@@ -7,17 +7,33 @@ from sensor_msgs.msg import Image, CameraInfo
 from std_msgs.msg import Float32
 import rospy
 import math
+from robot_controller import bot_control
 
 
 class Line_Follower():
     def __init__(self):
         rospy.init_node('ERROR', anonymous=False) #initialize user default node and annoymous help in maintaining uniquness of node
         self.bridge = cv_bridge.CvBridge()
-        
         self.pub = rospy.Publisher('geometry_msgs',Float32, queue_size=10) 
-        self.sub = rospy.Subscriber('geometry_msgs',Float32, queue_size=10) 
+        self.sub = rospy.Subscriber('geometry_msgs',Float32, queue_size=10)
+        
+        self.pub = rospy.Publisher('/cmd_vel', Twist, queue_size=10)
+
+        self.velocity_msg = Twist()
+        self.velocity_msg.linear.y = 0
+        self.velocity_msg.linear.z = 0
+        self.velocity_msg.angular.x = 0
+        self.velocity_msg.angular.y = 0
+        #PID control/using P controller:
+        self.P = rospy.get_param("robot_controller/pid/p")
 
         rate = rospy.Rate(10)
+        
+    #move function to move robot
+    def move(self,linear,angular):
+        self.velocity_msg.linear.x = linear
+        self.velocity_msg.angular.z = angular 
+        self.pub.publish(self.velocity_msg)
         
         
     def img_detection(self):
@@ -65,15 +81,19 @@ class Line_Follower():
                         d = math.sqrt(( cy-cY)**2 + ( cx-cX)**2)
                         print("turn left")
                         print(d)
+                        self.fix_error(0,2)
                     if cx>cX:
                         d = -(math.sqrt(( cy-cY)**2 + ( cx-cX)**2))
                         print("turn right")
                         print(d)
+                        self.fix_error(0,2)
                     if cx==cX:
                         print(d)
+                        self.fix_error(0,0)
                         print("you r on right path")
                     if d==0:
                         print(d)
+                        self.fix_error(0,0)
                         print("you r right")
 
 
