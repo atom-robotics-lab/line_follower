@@ -7,7 +7,7 @@ from sensor_msgs.msg import Image, CameraInfo
 from std_msgs.msg import Float32
 import rospy
 import math
-from robot_controller import bot_control
+
 
 
 class Line_Follower():
@@ -71,19 +71,19 @@ class Line_Follower():
                         d = math.sqrt(( cy-cY)**2 + ( cx-cX)**2)
                         print("turn right")
                         print(d)
-                        self.fix_error(0,2)
+                        
                     if cx>(cX+5):
                         d = -(math.sqrt(( cy-cY)**2 + ( cx-cX)**2))
                         print(d)
-                        self.fix_error(0,2)
+                        
                         print("turn left")
                     if cx in range (cX-5,cX+6):
                         print(d)
-                        self.fix_error(0,0)
+                        
                         print("you r on right path")
                     if d==0:
                         print(d)
-                        self.fix_error(0,0)
+                        
                         print("you r right")
 
 
