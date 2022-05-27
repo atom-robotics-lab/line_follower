@@ -26,4 +26,4 @@ class bot_control:
 
   
 if __name__=="__main__":
-    robot = bot_cotrol()
+    robot = bot_control()
