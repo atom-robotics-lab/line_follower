@@ -5,7 +5,7 @@ import cv2
 import numpy as np
 import cv_bridge
 from sensor_msgs.msg import Image, CameraInfo
-from std_msgs.msg import Float32
+#from std_msgs.msg import Float32
 import rospy
 import math
 from robot_controller import bot_control
@@ -27,7 +27,7 @@ class Line_Follower :
         self.velocity_msg.angular.x = 0
         self.velocity_msg.angular.y = 0
         #PID control/using P controller:
-        self.P = 0.015 #rospy.get_param("robot_controller/pid/p")
+        #self.P = 0.005 #rospy.get_param("robot_controller/pid/p")
 
         rate = rospy.Rate(10)
         self.bc=bot_control()
@@ -37,34 +37,10 @@ class Line_Follower :
     #     self.velocity_msg.linear.x = linear
     #     self.velocity_msg.angular.z = angular 
     #     self.pub.publish(self.velocity_msg)
-    def process_image(self) :
-
-        self.cX=80
-        self.cY=60
-        frame = self.cap
-        hsv=cv2.cvtColor(frame,cv2.COLOR_BGR2HSV)
-
-
-        dst = cv2.medianBlur(hsv, 9)
-
-
-
-        lower_brg=np.array([0,0,0])
-        upper_brg=np.array([180, 255, 65])
-        mask = cv2.inRange(dst,lower_brg, upper_brg)
-        self.cropped_image1 = frame[100::, 0::]
-        #cropped_image3 = inverted_image[100::, 0::]
-        self.cropped_image3 = mask[100::, 0::]
-
-
-        
-        
+    
+                
     def callback(self,data):         
 
-    
-
-
-            
         self.cap = self.bridge.imgmsg_to_cv2(data, "bgr8")
 
         cv2.imshow("data" , self.cap)
@@ -73,7 +49,27 @@ class Line_Follower :
         self.process_image()
 
         self.control_loop()
+
+    
+    def process_image(self) :
+
+        self.cX=420
+        self.cY=340
+        frame = self.cap
+        hsv=cv2.cvtColor(frame,cv2.COLOR_BGR2HSV)
+
+
+        dst = cv2.medianBlur(hsv, 9)
+
+
+        lower_brg=np.array([0,0,0])
+        upper_brg=np.array([180, 255, 65])
+        mask = cv2.inRange(dst,lower_brg, upper_brg)
+        self.cropped_image1 = frame[100::, 0::]
+        #cropped_image3 = inverted_image[100::, 0::]
+        self.cropped_image3 = mask[100::, 0::]
         
+    
     def control_loop(self):
             #Contours
         contours, hierarchy = cv2.findContours(self.cropped_image3 , 1, cv2.CHAIN_APPROX_NONE)
@@ -87,27 +83,28 @@ class Line_Follower :
             if M["m00"] != 0:
                 cx = int(M["m10"] / M["m00"])
                 cy = int(M["m01"] / M["m00"])
-                print("CX : "+str(cx)+"  CY : "+str(cy))
+                print("cx : "+str(cx)+"  cy : "+str(cy))
                 if cx<self.cX:
                     d = math.sqrt(( cy-self.cY)**2 + ( cx-self.cX)**2)
                     print("turn left")
                     print(d)
-                    self.bc.fix_error(0,2)
+                    self.bc.fix_error(0,d)
                 if cx>self.cX:
                     d = -(math.sqrt(( cy-self.cY)**2 + ( cx-self.cX)**2))
                     print("turn right")
                     print(d)
-                    self.bc.fix_error(0,2)
+                    self.bc.fix_error(0,d)
                 if cx==self.cX:
                     print(d)
                     self.bc.fix_error(0,0)
-                    print("you r on right path")
+                    print("you are on right path")
                 if d==0:
                     print(d)
                     self.bc.fix_error(0,0)
-                    print("you r right")
+                    print("you are right")
             else:
                 cx, cy = 0, 0
+                self.bc.fix_error(0,0)
             
             
             cv2.circle(self.cropped_image3, (cx, cy), 5, (255, 255, 255), -2)
@@ -125,11 +122,11 @@ class Line_Follower :
 def main():
     rospy.init_node("line_follower",anonymous=True)
     a=Line_Follower()
-
-    try :
-        rospy.spin()
-    except:
-        print("error")
+    rospy.spin()
+    # try :
+    #     rospy.spin()
+    # except:
+    #     print("error")
 
     cv2.destroyAllWindows()
 
