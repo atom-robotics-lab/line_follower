@@ -8,6 +8,10 @@ import cv2
 from sensor_msgs.msg import Image
 
 class bot_control:
+    def __init__(self) :
+        self.P = 0.015
+        self.velocity_msg = Twist()
+        self.pub = rospy.Publisher('/cmd_vel' , Twist , queue_size = 10)
     
       #self.image_sub = Line_Follower()
 
@@ -16,6 +20,7 @@ class bot_control:
         self.velocity_msg.linear.x = linear
         self.velocity_msg.angular.z = angular 
         self.pub.publish(self.velocity_msg)
+        
 
         
     #fix error & bot position correction
@@ -24,11 +29,11 @@ class bot_control:
         if linear_error != 0:
             
             # moving in straight line
-            self.move(self.P*linear_error, 0)
+            self.move(1.0, 0)
             
         if orien_error != 0:           
             # fixing the yaw     
-             self.move(2,self.P*-1*orien_error)
+             self.move(1.0,self.P*-1*orien_error)
 
 
   
