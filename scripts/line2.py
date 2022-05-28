@@ -30,37 +30,57 @@ class Line_Follower :
         #self.cX=80
         #self.cY=60
         frame = self.cap
+        frame = frame[ 600:800 , 0:400]
         hsv=cv2.cvtColor(frame,cv2.COLOR_BGR2HSV)
         #centre of frame 
         (cx2,cy2)=hsv.shape[:2]
         self.cX=cx2//2
         self.cY=cy2//2
+        print(f"cX = {self.cX}")
+        print(f"cY = {self.cY}")
         dst = cv2.medianBlur(hsv, 9)
         lower_brg=np.array([0,0,0])
         upper_brg=np.array([180, 255, 65])
         mask = cv2.inRange(dst,lower_brg, upper_brg)
-        self.cropped_image1 = frame[300:480, ::]
+        self.cropped_image1 = frame
         #cropped_image3 = inverted_image[100::, 0::]
-        self.cropped_image3 = mask[300:480, ::]
+        self.cropped_image3 = mask
+        self.draw_grid(self.cropped_image1, (2,2))
+
 
 
         
         
     def callback(self,data):         
-
-    
-
-
             
         self.cap = self.bridge.imgmsg_to_cv2(data, "bgr8")
+        new_frame = self.cap
+        new_frame = new_frame[ 600:800 , 0:400]
 
-        cv2.imshow("data" , self.cap)
+        cv2.imshow("data" , new_frame)
         cv2.waitKey(1) 
         
         self.process_image()
 
         self.control_loop()
-        
+
+
+    def draw_grid(self, img, grid_shape, color=(0, 255, 0), thickness=1):
+        h, w, _ = img.shape
+        rows, cols = grid_shape
+        dy, dx = h / rows, w / cols
+
+        # draw vertical lines
+        for x in np.linspace(start=dx, stop=w-dx, num=cols-1):
+            x = int(round(x))
+            cv2.line(img, (x, 0), (x, h), color=color, thickness=thickness)
+
+        # draw horizontal lines
+        for y in np.linspace(start=dy, stop=h-dy, num=rows-1):
+            y = int(round(y))
+            cv2.line(img, (0, y), (w, y), color=color, thickness=thickness)
+
+
     def control_loop(self):
             #Contours
         contours, hierarchy = cv2.findContours(self.cropped_image3 , 1, cv2.CHAIN_APPROX_NONE)
@@ -76,22 +96,24 @@ class Line_Follower :
                 cy = int(M["m01"] / M["m00"])
                 print("CX : "+str(cx)+"  CY : "+str(cy))
                 if cx<(self.cX)-5:
-                    d = math.sqrt(( cx-self.cX)**2)
+                    d = -(math.sqrt(( cx-self.cX)**2))
                     print("turn left")
                     print(d)
-                    self.bc.fix_error(0,d)
-                if cx>(self.cX)+5:
-                    d = -(math.sqrt(( cx-self.cX)**2))
+                    self.bc.fix_error(0,-d)
+                elif cx>(self.cX)+5:
+                    d = math.sqrt(( cx-self.cX)**2)
                     print("turn right")
                     print(d)
-                    self.bc.fix_error(0,d)
-                if cx in range ((self.cX)-5,(self.cX)+6):
+                    self.bc.fix_error(0,-d)
+                elif cx in range ((self.cX)-5,(self.cX)+5):
+                    d = 0
                     print(d)
                     self.bc.fix_error(0,0)
                     print("you are on right path")
                 
             else:
                 cx, cy = 0, 0
+                self.bc.fix_error(0,0)
             
             
             cv2.circle(self.cropped_image3, (cx, cy), 5, (255, 255, 255), -2)
@@ -100,7 +122,7 @@ class Line_Follower :
             
             cv2.drawContours(self.cropped_image1, c, -1, (0,255,0), 1)
             cv2.imshow("Mask",self.cropped_image3)
-            #cv2.imshow("Frame",cropped_image1)
+            cv2.imshow("Frame",self.cropped_image1)
             #cv2.imshow("Gray",cropped_image2)
             cv2.waitKey(1)  
         

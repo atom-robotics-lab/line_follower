@@ -6,14 +6,13 @@ from sensor_msgs.msg import Image
 
 class bot_control:
     def __init__(self) :
-        self.P = 0.015
         self.velocity_msg = Twist()
         self.velocity_msg.linear.y = 0
         self.velocity_msg.linear.z = 0
         self.velocity_msg.angular.x = 0
         self.velocity_msg.angular.y = 0
         self.pub = rospy.Publisher('/cmd_vel' , Twist , queue_size = 10)
-        self.P = 0.0001 #rospy.get_param("line_follower_controller/pid/p")
+        self.P = 0.004 #rospy.get_param("line_follower_controller/pid/p")
     
       #self.image_sub = Line_Follower()
 
@@ -31,13 +30,13 @@ class bot_control:
         if orien_error < 0:           
 
             # fixing the yaw     
-             self.move(0.1,0.4) #self.P*orien_error
+             self.move(0.2,self.P*orien_error + 0.6)
              print("fixing yaw by turning left")
 
         elif orien_error > 0:           
 
             # fixing the yaw     
-             self.move(0.1,-0.4) #self.P*orien_error
+             self.move(0.2,self.P*orien_error)
              print("fixing yaw by turning right")
                 
         else:
