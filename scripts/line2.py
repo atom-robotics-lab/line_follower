@@ -39,9 +39,9 @@ class Line_Follower :
         lower_brg=np.array([0,0,0])
         upper_brg=np.array([180, 255, 65])
         mask = cv2.inRange(dst,lower_brg, upper_brg)
-        self.cropped_image1 = frame[100::, 0::]
+        self.cropped_image1 = frame[300:480, ::]
         #cropped_image3 = inverted_image[100::, 0::]
-        self.cropped_image3 = mask[100::, 0::]
+        self.cropped_image3 = mask[300:480, ::]
 
 
         
