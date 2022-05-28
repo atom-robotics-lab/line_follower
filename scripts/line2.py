@@ -75,24 +75,21 @@ class Line_Follower :
                 cx = int(M["m10"] / M["m00"])
                 cy = int(M["m01"] / M["m00"])
                 print("CX : "+str(cx)+"  CY : "+str(cy))
-                if cx<self.cX:
-                    d = math.sqrt(( cy-self.cY)**2 + ( cx-self.cX)**2)
+                if cx<(self.cX)-5:
+                    d = math.sqrt(( cx-self.cX)**2)
                     print("turn left")
                     print(d)
                     self.bc.fix_error(0,d)
-                if cx>self.cX:
-                    d = -(math.sqrt(( cy-self.cY)**2 + ( cx-self.cX)**2))
+                if cx>(self.cX)+5:
+                    d = -(math.sqrt(( cx-self.cX)**2))
                     print("turn right")
                     print(d)
                     self.bc.fix_error(0,d)
-                if cx==self.cX:
+                if cx in range ((self.cX)-5,(self.cX)+6):
                     print(d)
                     self.bc.fix_error(0,0)
                     print("you are on right path")
-                if d==0:
-                    print(d)
-                    self.bc.fix_error(0,0)
-                    print("you are on right path")
+                
             else:
                 cx, cy = 0, 0
             
