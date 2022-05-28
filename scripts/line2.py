@@ -21,22 +21,10 @@ class Line_Follower :
         
         self.pub = rospy.Publisher('/cmd_vel', Twist, queue_size=10)
 
-        self.velocity_msg = Twist()
-        self.velocity_msg.linear.y = 0
-        self.velocity_msg.linear.z = 0
-        self.velocity_msg.angular.x = 0
-        self.velocity_msg.angular.y = 0
-        #PID control/using P controller:
-        self.P = 0.015 #rospy.get_param("robot_controller/pid/p")
-
         rate = rospy.Rate(10)
         self.bc=bot_control()
-        
-        #move function to move robot
-        # def move(self,linear,angular):
-        #     self.velocity_msg.linear.x = linear
-        #     self.velocity_msg.angular.z = angular 
-        #     self.pub.publish(self.velocity_msg)
+
+
     def process_image(self) :
 
         #self.cX=80
@@ -91,20 +79,20 @@ class Line_Follower :
                     d = math.sqrt(( cy-self.cY)**2 + ( cx-self.cX)**2)
                     print("turn left")
                     print(d)
-                    self.bc.fix_error(0,2)
+                    self.bc.fix_error(0,d)
                 if cx>self.cX:
                     d = -(math.sqrt(( cy-self.cY)**2 + ( cx-self.cX)**2))
                     print("turn right")
                     print(d)
-                    self.bc.fix_error(0,2)
+                    self.bc.fix_error(0,d)
                 if cx==self.cX:
                     print(d)
                     self.bc.fix_error(0,0)
-                    print("you r on right path")
+                    print("you are on right path")
                 if d==0:
                     print(d)
                     self.bc.fix_error(0,0)
-                    print("you r right")
+                    print("you are on right path")
             else:
                 cx, cy = 0, 0
             
