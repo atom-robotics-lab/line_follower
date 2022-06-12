@@ -2,7 +2,7 @@
 
 This is line follower robot based on OpenCV(computer vision).  
 # Introduction
-In this project we use opencv to capture video from Image sensor on bot then process the image by __masking__ the path and draw __Contour & Momments__ of masked image. Now in bot_control class we use __P(proportional control)__ to correct the deviaton of bot from path.
+In this project, we use OpenCV to capture video from the Image sensor on the bot and then process the image by __masking__ the path and drawing __Contour & Momments__ of the masked image. Now in bot_control class we use __P(proportional control)__ to correct the deviation of the bot from the path and publish them into the __/cmd_vel__ topic which helps the bot to take a turn.
 
 <img src = "https://github.com/atom-robotics-lab/line_follower/blob/main/Assets/work_flow.png" >
 
