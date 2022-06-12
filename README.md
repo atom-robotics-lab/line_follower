@@ -5,12 +5,12 @@ This is line follower robot using OpenCV on ROS.
 # Introduction
 this project use opencv library in python to capture video using Image sensor on bot then mask the path to be followed. After that moments has to be find from that mask image now by using P(proportional control) we counter balance the deviaton of bot from the path.
 
-<img src = "https://github.com/atom-robotics-lab/line_follower/blob/main/assets/work_flow.png" >
+<img src = "https://github.com/atom-robotics-lab/line_follower/blob/main/Assets/work_flow.png" >
 
 
 # Demo
 
-<img src = "https://github.com/atom-robotics-lab/line_follower/blob/main/assets/line_follower.gif" >
+<img src = "https://github.com/atom-robotics-lab/line_follower/blob/main/Assets/line_follower.gif" >
 
 #
 
@@ -65,7 +65,7 @@ roslaunch line_follower bot_world.launch
 ```
 The above command when executed in the terminal will launch the gazebo simulation and will also start ROS Master.
 
-<img src = "https://github.com/atom-robotics-lab/line_follower/blob/main/assets/launch.png" >
+<img src = "https://github.com/atom-robotics-lab/line_follower/blob/main/Assets/launch.png" >
 
 
 __Run script__
@@ -76,7 +76,7 @@ rosrun line_follower line2.py
 
 The given command will run the controller script which controls the robot's movements.
 
-<img src = "https://github.com/atom-robotics-lab/line_follower/blob/main/assets/line_follower.gif" >
+<img src = "https://github.com/atom-robotics-lab/line_follower/blob/main/Assets/line_follower.gif" >
 
 
 
