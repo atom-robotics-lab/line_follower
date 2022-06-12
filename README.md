@@ -3,23 +3,18 @@
 This is line follower robot using OpenCV on ROS.
 
 # Introduction
-this project use opencv library in python to capture video using Image sensor on bot then mask the path to be followed. After that moments has to be find from that mask image now by using P(proportional control) we correct the deviaton of bot from the path.
+In this project we use opencv to capture video from Image sensor on bot then process the image by __masking__ the path and draw __Contour & Momments__ of masked image. Now in bot_control class we use __P(proportional control)__ to correct the deviaton of bot from path.
 
 <img src = "https://github.com/atom-robotics-lab/line_follower/blob/main/Assets/work_flow.png" >
-
-
-# Demo
-
-<img src = "https://github.com/atom-robotics-lab/line_follower/blob/main/Assets/line_follower.gif" >
 
 #
 
 # Installation
-#
+
 ## Pre-Requisites:
 - ROS noetic : Refer to the [official documentation](http://wiki.ros.org/noetic/Installation/Ubuntu) for installation of ROS noetic.
                
-- Catkin workspace : A catkin workspace is a folder where you modify, build, and. install catkin packages. Take a look ak the [official documentation](http://wiki.ros.org/catkin/Tutorials/create_a_workspace) for instructions regarding creation of a catkin workspace
+- Catkin workspace : A catkin workspace is a folder where you modify, build, and. install catkin packages. Take a look at the [official documentation](http://wiki.ros.org/catkin/Tutorials/create_a_workspace) for instructions regarding creation of a catkin workspace
 
 
 ## Installation of Virtualenvwrapper, OpenCV, and CV_bridge
@@ -60,6 +55,7 @@ catkin_make
 # Launch
 
 __launching world__
+
 ```bash
 roslaunch line_follower bot_world.launch
 ```
