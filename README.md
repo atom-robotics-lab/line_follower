@@ -1,7 +1,6 @@
 # Line_follower
 
-This is line follower robot using OpenCV on ROS.
-
+This is line follower robot based on OpenCV(computer vision).  
 # Introduction
 In this project we use opencv to capture video from Image sensor on bot then process the image by __masking__ the path and draw __Contour & Momments__ of masked image. Now in bot_control class we use __P(proportional control)__ to correct the deviaton of bot from path.
 
