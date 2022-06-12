@@ -3,7 +3,7 @@
 This is line follower robot using OpenCV on ROS.
 
 # Introduction
-this project use opencv library in python to capture video using Image sensor on bot then mask the path to be followed. After that moments has to be find from that mask image now by using P(proportional control) we counter balance the deviaton of bot from the path.
+this project use opencv library in python to capture video using Image sensor on bot then mask the path to be followed. After that moments has to be find from that mask image now by using P(proportional control) we correct the deviaton of bot from the path.
 
 <img src = "https://github.com/atom-robotics-lab/line_follower/blob/main/Assets/work_flow.png" >
 
